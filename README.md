@@ -6,7 +6,7 @@
 
 通过Gradle抓取:
 ```gradle
-compile 'cn.finalteam:filedownloaderfinal:1.0.0'//请稍等~请求已发送到jcenter等待审核
+compile 'cn.finalteam:filedownloaderfinal:1.0.0'
 ```
 * 在App Application中添加一下配置
 ```java
