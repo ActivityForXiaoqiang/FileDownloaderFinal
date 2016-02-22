@@ -10,7 +10,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -83,7 +82,7 @@ public class DownloadManagerListAdapter extends CommonBaseAdapter<DownloadManage
                 //正在下载
                 holder.updateDownloading(DownloaderManager.getInstance().getProgress(model.getId()));
             } else if (DownloaderManager.getInstance().isWaiting(model.getId())) {//队列已满，等待下载
-                holder.updateWaiting(DownloaderManager.getInstance().getProgress(model.getId()));
+                holder.updateWait(DownloaderManager.getInstance().getProgress(model.getId()));
             } else {
                 //已经在下载列表，可能因为某种原有导致下载停止
                 int progress = DownloaderManager.getInstance().getProgress(model.getId());
@@ -247,12 +246,6 @@ public class DownloadManagerListAdapter extends CommonBaseAdapter<DownloadManage
         public void updateWait(int progress) {
             mNumberProgressBar.setProgress(progress);
             mTvDownloadState.setText("Status:wait");
-            mBtnOperate.setText("Pause");
-        }
-
-        public void updateWaiting(int progress) {
-            mNumberProgressBar.setProgress(progress);
-            mTvDownloadState.setText("Status:waiting");
             mBtnOperate.setText("Pause");
         }
 
