@@ -244,7 +244,7 @@ public class DownloadManagerListAdapter extends CommonBaseAdapter<DownloadManage
             mNumberProgressBar.setProgress(progress);
             mTvDownloadState.setText("Status:downloading");
             mBtnOperate.setText("Pause");
-            mTvDownloadSpeed.setText(generateFileSize(speed));
+            mTvDownloadSpeed.setText("Speed:" + generateFileSize(speed));
         }
 
         public void updateWait(int progress) {

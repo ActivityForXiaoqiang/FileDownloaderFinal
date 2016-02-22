@@ -6,7 +6,7 @@
 
 通过Gradle抓取:
 ```gradle
-compile 'cn.finalteam:filedownloaderfinal:1.0.0'
+compile 'cn.finalteam:filedownloaderfinal:1.0.1'
 ```
 * 在App Application中添加一下配置
 ```java
@@ -89,6 +89,10 @@ DownloaderManager.getInstance().addTask(model);
 ```
 
 # 历史版本
+## V1.0.1
+* 添加下载速度
+* 添加常用方法
+
 ## V1.0.0
 * 文件下载管理功能
 * 添加数据库表模型可扩展
