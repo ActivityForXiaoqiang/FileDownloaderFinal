@@ -300,6 +300,22 @@ public class DownloaderManager {
         return getFileDownloaderModelById(id);
     }
 
+    /**
+     * 根据URL获取下载信息
+     * @param url
+     * @return
+     */
+    public FileDownloaderModel getFileDownloaderModelByUrl(String url) {
+        for (int i = 0; i < mAllTasks.size(); i++) {
+            FileDownloaderModel model = getFileDownloaderModelByPostion(i);
+            if (model != null && TextUtils.equals(model.getUrl(), url)) {
+                return model;
+            }
+        }
+
+        return null;
+    }
+
 
     /**
      * 根据downloadId获取下载信息
@@ -358,6 +374,20 @@ public class DownloaderManager {
     }
 
     /**
+     * 判断任务是否存在
+     * @param url
+     * @return
+     */
+    public boolean exists(String url) {
+        FileDownloaderModel model = getFileDownloaderModelByUrl(url);
+        if (model != null) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * 获取FileDownloader FileDownloadStatus下载状态
      * @param downloadId
      * @return
@@ -371,7 +401,7 @@ public class DownloaderManager {
      * @param downloadId
      * @return
      */
-    private long getTotal(final int downloadId) {
+    public long getTotal(final int downloadId) {
         return FileDownloader.getImpl().getTotal(downloadId);
     }
 
@@ -380,7 +410,7 @@ public class DownloaderManager {
      * @param downloadId
      * @return
      */
-    private long getSoFar(final int downloadId) {
+    public long getSoFar(final int downloadId) {
         return FileDownloader.getImpl().getSoFar(downloadId);
     }
 
@@ -472,6 +502,40 @@ public class DownloaderManager {
         model = mDbController.addTask(downloaderModel);
         mAllTasks.put(id, model);
 
+        return model;
+    }
+
+    /**
+     * 添加任务并启动
+     * @param url
+     * @return
+     */
+    public FileDownloaderModel addTaskAndStart(String url) {
+        FileDownloaderModel model = addTask(url);
+        startTask(model.getId());
+        return model;
+    }
+
+    /**
+     * 添加任务并启动
+     * @param url
+     * @param path
+     * @return
+     */
+    public FileDownloaderModel addTaskAndStart(final String url, String path) {
+        FileDownloaderModel model = addTask(url, path);
+        startTask(model.getId());
+        return model;
+    }
+
+    /**
+     * 添加任务并启动
+     * @param downloaderModel
+     * @return
+     */
+    public FileDownloaderModel addTaskAndStart(FileDownloaderModel downloaderModel) {
+        FileDownloaderModel model = addTask(downloaderModel);
+        startTask(model.getId());
         return model;
     }
 
