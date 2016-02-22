@@ -34,6 +34,9 @@ class BridgeListener extends FileDownloadListener {
 
     private BaseDownloadTask mDownloadTask;
     private FileDownloaderCallback mGlobleDownloadCallback;
+    //开始下载时间，用户计算加载速度
+    private long mPreviousTime;
+    private long mSpeed;//下载速度
 
     public BridgeListener(){
         mGlobleDownloadCallback = DownloaderManager.getInstance().getGlobalDownloadCallback();
@@ -82,6 +85,7 @@ class BridgeListener extends FileDownloadListener {
         if (mGlobleDownloadCallback != null) {
             mGlobleDownloadCallback.onStart(task.getDownloadId(), soFarBytes, totalBytes, preProgress);
         }
+        mPreviousTime = System.currentTimeMillis();
     }
 
     @Override
@@ -90,14 +94,23 @@ class BridgeListener extends FileDownloadListener {
         if ( totalBytes != 0 ) {
             progress = (int)(soFarBytes / (float)totalBytes * 100);
         }
+        //计算下载速度
+        long totalTime = (System.currentTimeMillis() - mPreviousTime)/1000;
+        if ( totalTime == 0 ) {
+            totalTime += 1;
+        }
+        long speed = soFarBytes / totalTime;
+
         for(FileDownloaderCallback listener: mListenerList) {
             if (listener != null) {
-                listener.onProgress(task.getDownloadId(), soFarBytes, totalBytes, progress);
+                listener.onProgress(task.getDownloadId(), soFarBytes, totalBytes, speed, progress);
             }
         }
 
+        mSpeed = speed;
+
         if (mGlobleDownloadCallback != null) {
-            mGlobleDownloadCallback.onProgress(task.getDownloadId(), soFarBytes, totalBytes, progress);
+            mGlobleDownloadCallback.onProgress(task.getDownloadId(), soFarBytes, totalBytes, speed, progress);
         }
     }
 
@@ -181,6 +194,10 @@ class BridgeListener extends FileDownloadListener {
         if (model != null) {
             DownloaderManager.getInstance().startTask(model.getId());
         }
+    }
+
+    protected long getSpeed() {
+        return mSpeed;
     }
 
 }

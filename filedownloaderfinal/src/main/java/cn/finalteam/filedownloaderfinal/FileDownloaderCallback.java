@@ -40,9 +40,10 @@ public class FileDownloaderCallback {
      * @param downloadId
      * @param soFarBytes
      * @param totalBytes
+     * @param speed
      * @param progress
      */
-    public void onProgress(int downloadId, long soFarBytes, long totalBytes, int progress) {
+    public void onProgress(int downloadId, long soFarBytes, long totalBytes, long speed, int progress) {
 
     }
 

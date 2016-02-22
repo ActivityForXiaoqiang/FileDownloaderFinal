@@ -58,9 +58,11 @@ public class SimpleFileDownloader {
     static class SimpleBridgeListener extends FileDownloadListener {
 
         private FileDownloaderCallback mFileDownloaderCallback;
+        private long mPreviousTime;
 
         public SimpleBridgeListener(final FileDownloaderCallback callback) {
             this.mFileDownloaderCallback = callback;
+            mPreviousTime = System.currentTimeMillis();
         }
 
         @Override
@@ -94,7 +96,13 @@ public class SimpleFileDownloader {
                 if ( totalBytes != 0 ) {
                     progress = (int)(soFarBytes / (float)totalBytes * 100);
                 }
-                mFileDownloaderCallback.onProgress(task.getDownloadId(), soFarBytes, totalBytes, progress);
+                //计算下载速度
+                long totalTime = (System.currentTimeMillis() - mPreviousTime)/1000;
+                if ( totalTime == 0 ) {
+                    totalTime += 1;
+                }
+                long speed = soFarBytes / totalTime;
+                mFileDownloaderCallback.onProgress(task.getDownloadId(), soFarBytes, totalBytes, speed, progress);
             }
         }
 

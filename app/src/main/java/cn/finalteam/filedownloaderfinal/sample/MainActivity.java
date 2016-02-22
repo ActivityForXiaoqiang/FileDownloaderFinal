@@ -149,8 +149,8 @@ public class MainActivity extends AppCompatActivity {
         SimpleFileDownloader.downloadFile(url,
                 new FileDownloaderCallback() {
                     @Override
-                    public void onProgress(int downloadId, long soFarBytes, long totalBytes, int progress) {
-                        super.onProgress(downloadId, soFarBytes, totalBytes, progress);
+                    public void onProgress(int downloadId, long soFarBytes, long totalBytes, long speed, int progress) {
+                        super.onProgress(downloadId, soFarBytes, totalBytes, speed, progress);
                         ILogger.i("downloading download=%d, progress=%d", downloadId, progress);
                         mPbSimpleDownload.setProgress(progress);
                     }

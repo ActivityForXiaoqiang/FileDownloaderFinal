@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -80,7 +81,9 @@ public class DownloadManagerListAdapter extends CommonBaseAdapter<DownloadManage
                 holder.updateDownloaded();
             } else if (DownloaderManager.getInstance().isDownloading(model.getId())) {
                 //正在下载
-                holder.updateDownloading(DownloaderManager.getInstance().getProgress(model.getId()));
+                int progress = DownloaderManager.getInstance().getProgress(model.getId());
+                long speed = DownloaderManager.getInstance().getSpeed(model.getId());
+                holder.updateDownloading(progress, speed);
             } else if (DownloaderManager.getInstance().isWaiting(model.getId())) {//队列已满，等待下载
                 holder.updateWait(DownloaderManager.getInstance().getProgress(model.getId()));
             } else {
@@ -117,8 +120,8 @@ public class DownloadManagerListAdapter extends CommonBaseAdapter<DownloadManage
             if (holder == null) {
                 return;
             }
-
-            holder.updateDownloading(preProgress);
+            long speed = DownloaderManager.getInstance().getSpeed(downloadId);
+            holder.updateDownloading(preProgress, speed);
         }
 
         @Override
@@ -133,13 +136,13 @@ public class DownloadManagerListAdapter extends CommonBaseAdapter<DownloadManage
         }
 
         @Override
-        public void onProgress(int downloadId, long soFarBytes, long totalBytes, int progress) {
-            super.onProgress(downloadId, soFarBytes, totalBytes, progress);
+        public void onProgress(int downloadId, long soFarBytes, long totalBytes, long speed, int progress) {
+            super.onProgress(downloadId, soFarBytes, totalBytes, speed, progress);
             final FileViewHolder holder = checkCurrentHolder(downloadId);
             if (holder == null) {
                 return;
             }
-            holder.updateDownloading(progress);
+            holder.updateDownloading(progress, speed);
         }
 
         @Override
@@ -237,10 +240,11 @@ public class DownloadManagerListAdapter extends CommonBaseAdapter<DownloadManage
          *
          * @param progress
          */
-        public void updateDownloading(int progress) {
+        public void updateDownloading(int progress, long speed) {
             mNumberProgressBar.setProgress(progress);
             mTvDownloadState.setText("Status:downloading");
             mBtnOperate.setText("Pause");
+            mTvDownloadSpeed.setText(generateFileSize(speed));
         }
 
         public void updateWait(int progress) {
@@ -261,6 +265,26 @@ public class DownloadManagerListAdapter extends CommonBaseAdapter<DownloadManage
         public FileViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        static final double KB = 1024.0;
+        static final double MB = KB * KB;
+        static final double GB = KB * KB * KB;
+
+        static String generateFileSize(long size) {
+            String fileSize;
+
+            if (size < KB) {
+                fileSize = size + "B";
+            } else if (size < MB) {
+                fileSize = new DecimalFormat("#.00").format(size / KB) + "KB";
+            } else if (size < GB) {
+                fileSize = new DecimalFormat("#.00").format(size / MB) + "MB";
+            } else {
+                fileSize = new DecimalFormat("#.00").format(size / GB) + "GB";
+            }
+
+            return fileSize;
         }
     }
 }

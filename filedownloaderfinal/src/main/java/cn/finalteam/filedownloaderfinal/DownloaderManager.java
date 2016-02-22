@@ -415,6 +415,16 @@ public class DownloaderManager {
     }
 
     /**
+     * 获取下载速度
+     * @param downloadId
+     * @return
+     */
+    public long getSpeed(final int downloadId) {
+        BridgeListener bridgeListener = mListenerManager.getBridgeListener(downloadId);
+        return bridgeListener.getSpeed();
+    }
+
+    /**
      * 根据downloadId获取文件下载进度
      * @param downloadId
      * @return
