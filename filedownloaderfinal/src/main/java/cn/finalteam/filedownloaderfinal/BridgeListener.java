@@ -37,6 +37,7 @@ class BridgeListener extends FileDownloadListener {
     //开始下载时间，用户计算加载速度
     private long mPreviousTime;
     private long mSpeed;//下载速度
+    private long mOldSoFarBytes;
 
     public BridgeListener(){
         mGlobleDownloadCallback = DownloaderManager.getInstance().getGlobalDownloadCallback();
@@ -85,6 +86,7 @@ class BridgeListener extends FileDownloadListener {
         if (mGlobleDownloadCallback != null) {
             mGlobleDownloadCallback.onStart(task.getDownloadId(), soFarBytes, totalBytes, preProgress);
         }
+        mOldSoFarBytes = soFarBytes;
         mPreviousTime = System.currentTimeMillis();
     }
 
@@ -94,12 +96,13 @@ class BridgeListener extends FileDownloadListener {
         if ( totalBytes != 0 ) {
             progress = (int)(soFarBytes / (float)totalBytes * 100);
         }
+
         //计算下载速度
         long totalTime = (System.currentTimeMillis() - mPreviousTime)/1000;
         if ( totalTime == 0 ) {
             totalTime += 1;
         }
-        long speed = soFarBytes / totalTime;
+        long speed = (soFarBytes - mOldSoFarBytes) / totalTime;
 
         for(FileDownloaderCallback listener: mListenerList) {
             if (listener != null) {
