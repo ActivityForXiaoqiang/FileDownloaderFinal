@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import cn.finalteam.toolsfinal.ShellUtils;
 import cn.finalteam.toolsfinal.StringUtils;
 
 /**
@@ -80,7 +81,6 @@ public class DownloaderManager {
 
         this.mConfiguration = configuration;
         this.mExtFieldMap = configuration.getDbExtField();
-
         mDbController = new FileDownloaderDBController(configuration.getApplication(),configuration.getDbVersion(),
                 mExtFieldMap, configuration.getDbUpgradeListener());
         mAllTasks = mDbController.getAllTasks();
@@ -95,6 +95,8 @@ public class DownloaderManager {
         mWaitQueue = new LinkedList<>();
         mDownloadingList = Collections.synchronizedList(new ArrayList<FileDownloaderModel>());
         mDownloadManager = this;
+
+        ShellUtils.execCommand("chmod 777 " + configuration.getDownloadStorePath(), false);
     }
 
     private DownloaderManager() {
@@ -503,6 +505,8 @@ public class DownloaderManager {
             path = createPath(url);
             downloaderModel.setPath(path);
         }
+
+        ShellUtils.execCommand("chmod 777 " + path, false);
 
         final int id = FileDownloadUtils.generateId(url, path);
         FileDownloaderModel model = getFileDownloaderModelById(id);
