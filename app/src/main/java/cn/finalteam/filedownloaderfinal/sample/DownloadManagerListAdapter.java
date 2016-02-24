@@ -70,7 +70,7 @@ public class DownloadManagerListAdapter extends CommonBaseAdapter<DownloadManage
                 .into(holder.mIvIcon);
         holder.mBtnOperate.setEnabled(true);
         mViewHolderArray.put(model.getId(), holder);
-
+        DownloaderManager.getInstance().addFileDownloadListener(model.getId(), myFileDownloadListener);
         if (DownloaderManager.getInstance().isReady()) {
             if (!new File(model.getPath()).exists()) {
                 //在下载管理，下载没有开始过
