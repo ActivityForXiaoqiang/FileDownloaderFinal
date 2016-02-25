@@ -6,7 +6,7 @@
 
 通过Gradle抓取:
 ```gradle
-compile 'cn.finalteam:filedownloaderfinal:1.0.3'
+compile 'cn.finalteam:filedownloaderfinal:1.0.4'
 ```
 * 在App Application中添加一下配置
 ```java
@@ -89,6 +89,9 @@ DownloaderManager.getInstance().addTask(model);
 ```
 
 # 历史版本
+## V1.0.4
+* 更新tools库，解决日志循环输出bug
+
 ## V1.0.3
 * 解决下载文件存放到app cache目录不能访问问题
 
