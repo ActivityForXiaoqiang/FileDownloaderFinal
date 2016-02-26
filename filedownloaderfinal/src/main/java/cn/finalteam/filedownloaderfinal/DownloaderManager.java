@@ -58,6 +58,7 @@ public class DownloaderManager {
     private FileDownloaderCallback mGlobalDownloadCallback;
 
     private Map<String, String> mExtFieldMap;
+    private int mAutoRetryTimes;
     /**
      * 获取DownloadManager实例
      * @return
@@ -86,6 +87,7 @@ public class DownloaderManager {
         mAllTasks = mDbController.getAllTasks();
         mConnectListenerList = new ArrayList<>();
         mListenerManager = new ListenerManager();
+        mAutoRetryTimes = configuration.getAutoRetryTimes();
 
         //设置下载保存目录
         if (!StringUtils.isEmpty(configuration.getDownloadStorePath())) {
@@ -138,6 +140,7 @@ public class DownloaderManager {
                 final BaseDownloadTask task = FileDownloader.getImpl().create(model.getUrl())
                         .setPath(model.getPath())
                         .setCallbackProgressTimes(100)
+                        .setAutoRetryTimes(mAutoRetryTimes)
                         .setListener(bridgeListener);
                 bridgeListener.setDownloadTask(task);
                 task.start();

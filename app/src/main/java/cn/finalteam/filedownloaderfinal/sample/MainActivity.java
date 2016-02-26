@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish() {
                 addDownloadTask();
                 mDownloadManagerListAdapter.notifyDataSetChanged();
-
                 cancel();
             }
         }.start();

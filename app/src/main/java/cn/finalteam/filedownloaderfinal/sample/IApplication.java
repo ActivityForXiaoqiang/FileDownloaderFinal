@@ -45,6 +45,7 @@ public class IApplication extends Application {
                 .setMaxDownloadingCount(3) //配置最大并行下载任务数，配置范围[1-100]
                 .setDbExtField(dbExFeildMap) //配置数据库扩展字段
                 .setDbVersion(1)//配置数据库版本
+                .setAutoRetryTimes(5)
                 .setDbUpgradeListener(dbUpgradeListener) //配置数据库更新回调
                 .setDownloadStorePath(storeFile.getAbsolutePath()); //配置下载文件存储目录
 

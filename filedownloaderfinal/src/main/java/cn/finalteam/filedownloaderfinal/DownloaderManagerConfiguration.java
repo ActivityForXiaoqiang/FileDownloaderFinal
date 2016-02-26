@@ -38,6 +38,7 @@ public class DownloaderManagerConfiguration {
     private boolean mDebug;
     private DbUpgradeListener mDbUpgradeListener;
     private FileDownloadHelper.OkHttpClientCustomMaker mOkHttpClientCustomMaker;
+    private int mAutoRetryTimes;
 
     private DownloaderManagerConfiguration(final Builder builder) {
         this.mApplication = builder.mApplication;
@@ -50,6 +51,9 @@ public class DownloaderManagerConfiguration {
         if (builder.mMaxDownloadingCount > 0) {
             this.mMaxDownloadingCount = builder.mMaxDownloadingCount;
         }
+
+        this.mOkHttpClientCustomMaker = builder.mOkHttpClientCustomMaker;
+        this.mAutoRetryTimes = builder.mAutoRetryTimes;
     }
 
     public static class Builder {
@@ -61,6 +65,7 @@ public class DownloaderManagerConfiguration {
         private DbUpgradeListener mDbUpgradeListener;
         private boolean mDebug;
         private FileDownloadHelper.OkHttpClientCustomMaker mOkHttpClientCustomMaker;
+        private int mAutoRetryTimes = 3;
 
         public Builder(Application application) {
             this.mApplication = application;
@@ -105,6 +110,17 @@ public class DownloaderManagerConfiguration {
         @IntRange(from = 1, to = Integer.MAX_VALUE)
         public Builder setDbVersion(int dbVersion) {
             this.mDbVersion = dbVersion;
+            return this;
+        }
+
+        /**
+         * 自动重试次数
+         * @param autoRetryTimes
+         * @return
+         */
+        @IntRange(from = 1, to = Integer.MAX_VALUE)
+        public Builder setAutoRetryTimes(int autoRetryTimes) {
+            this.mAutoRetryTimes = autoRetryTimes;
             return this;
         }
 
@@ -175,5 +191,9 @@ public class DownloaderManagerConfiguration {
 
     public FileDownloadHelper.OkHttpClientCustomMaker getOkHttpClientCustomMaker() {
         return mOkHttpClientCustomMaker;
+    }
+
+    public int getAutoRetryTimes() {
+        return mAutoRetryTimes;
     }
 }
