@@ -450,6 +450,14 @@ public class DownloaderManager {
         return progress;
     }
 
+    public List<FileDownloaderModel> getAllTask() {
+        List<FileDownloaderModel> allTask = new ArrayList<>();
+        for (int i = 0; i < mAllTasks.size(); i++) {
+            allTask.add(mAllTasks.valueAt(i));
+        }
+        return allTask;
+    }
+
     /**
      * 获取所任务数
      * @return

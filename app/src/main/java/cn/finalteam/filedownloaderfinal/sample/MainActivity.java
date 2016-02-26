@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
 
+        DownloaderManager.getInstance().addServiceConnectListener(fileDownloadConnectListener);
+
         mDownloadManagerListAdapter = new DownloadManagerListAdapter(this);
         mLvTaskList.setAdapter(mDownloadManagerListAdapter);
 
@@ -55,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                DownloaderManager.getInstance().addServiceConnectListener(fileDownloadConnectListener);
                 addDownloadTask();
                 mDownloadManagerListAdapter.notifyDataSetChanged();
 
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
+            android.os.Process.killProcess(android.os.Process.myPid());
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -75,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        destroy();
         super.onDestroy();
+        destroy();
     }
 
     private void destroy() {
