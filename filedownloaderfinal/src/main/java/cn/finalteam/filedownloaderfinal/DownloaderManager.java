@@ -37,6 +37,7 @@ import java.util.Queue;
 
 import cn.finalteam.toolsfinal.ShellUtils;
 import cn.finalteam.toolsfinal.StringUtils;
+import okhttp3.Headers;
 
 /**
  * Desction:
@@ -59,6 +60,8 @@ public class DownloaderManager {
 
     private Map<String, String> mExtFieldMap;
     private int mAutoRetryTimes;
+    private Headers mHeaders;
+
     /**
      * 获取DownloadManager实例
      * @return
@@ -88,6 +91,7 @@ public class DownloaderManager {
         mConnectListenerList = new ArrayList<>();
         mListenerManager = new ListenerManager();
         mAutoRetryTimes = configuration.getAutoRetryTimes();
+        mHeaders = configuration.getHeaders();
 
         //设置下载保存目录
         if (!StringUtils.isEmpty(configuration.getDownloadStorePath())) {
@@ -142,6 +146,9 @@ public class DownloaderManager {
                         .setCallbackProgressTimes(100)
                         .setAutoRetryTimes(mAutoRetryTimes)
                         .setListener(bridgeListener);
+                for (int i = 0; i < mHeaders.size(); i++) {
+                    task.addHeader(mHeaders.name(i), mHeaders.value(i));
+                }
                 bridgeListener.setDownloadTask(task);
                 task.start();
             }

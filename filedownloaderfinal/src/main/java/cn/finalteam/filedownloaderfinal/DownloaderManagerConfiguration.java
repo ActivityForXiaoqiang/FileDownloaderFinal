@@ -23,6 +23,8 @@ import com.liulishuo.filedownloader.util.FileDownloadHelper;
 
 import java.util.Map;
 
+import okhttp3.Headers;
+
 /**
  * Desction:
  * Author:pengjianbo
@@ -39,6 +41,7 @@ public class DownloaderManagerConfiguration {
     private DbUpgradeListener mDbUpgradeListener;
     private FileDownloadHelper.OkHttpClientCustomMaker mOkHttpClientCustomMaker;
     private int mAutoRetryTimes;
+    private Headers mHeaders;
 
     private DownloaderManagerConfiguration(final Builder builder) {
         this.mApplication = builder.mApplication;
@@ -54,6 +57,7 @@ public class DownloaderManagerConfiguration {
 
         this.mOkHttpClientCustomMaker = builder.mOkHttpClientCustomMaker;
         this.mAutoRetryTimes = builder.mAutoRetryTimes;
+        this.mHeaders = builder.mHeaders.build();
     }
 
     public static class Builder {
@@ -66,9 +70,11 @@ public class DownloaderManagerConfiguration {
         private boolean mDebug;
         private FileDownloadHelper.OkHttpClientCustomMaker mOkHttpClientCustomMaker;
         private int mAutoRetryTimes = 3;
+        private Headers.Builder mHeaders;
 
         public Builder(Application application) {
             this.mApplication = application;
+            mHeaders = new Headers.Builder();
         }
 
         /**
@@ -135,6 +141,27 @@ public class DownloaderManagerConfiguration {
         }
 
         /**
+         * 添加header
+         * @param line
+         * @return
+         */
+        public Builder addHeader(String line) {
+            mHeaders.add(line);
+            return this;
+        }
+
+        /**
+         * 添加header
+         * @param name
+         * @param value
+         * @return
+         */
+        public Builder addHeader(String name, String value) {
+            mHeaders.add(name, value);
+            return this;
+        }
+
+        /**
          * 设置是否开启debug
          * @param debug
          * @return
@@ -195,5 +222,9 @@ public class DownloaderManagerConfiguration {
 
     public int getAutoRetryTimes() {
         return mAutoRetryTimes;
+    }
+
+    public Headers getHeaders() {
+        return mHeaders;
     }
 }
