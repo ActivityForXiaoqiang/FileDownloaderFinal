@@ -6,7 +6,7 @@
 
 通过Gradle抓取:
 ```gradle
-compile 'cn.finalteam:filedownloaderfinal:1.0.4'
+compile 'cn.finalteam:filedownloaderfinal:1.0.5'
 ```
 * 在App Application中添加一下配置
 ```java
@@ -89,6 +89,9 @@ DownloaderManager.getInstance().addTask(model);
 ```
 
 # 历史版本
+## V1.0.5
+* 添加下载自动重试
+
 ## V1.0.4
 * 更新tools库，解决日志循环输出bug
 
