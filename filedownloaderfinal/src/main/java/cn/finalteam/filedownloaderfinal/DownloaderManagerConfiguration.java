@@ -17,6 +17,7 @@
 package cn.finalteam.filedownloaderfinal;
 
 import android.app.Application;
+import android.content.Context;
 import android.support.annotation.IntRange;
 
 import com.liulishuo.filedownloader.util.FileDownloadHelper;
@@ -32,7 +33,7 @@ import okhttp3.Headers;
  */
 public class DownloaderManagerConfiguration {
 
-    private Application mApplication;
+    private Context mContext;
     private String mDownloadStorePath;
     private int mMaxDownloadingCount = 3;
     private Map<String, String> mDbExtFieldMap;
@@ -44,7 +45,7 @@ public class DownloaderManagerConfiguration {
     private Headers mHeaders;
 
     private DownloaderManagerConfiguration(final Builder builder) {
-        this.mApplication = builder.mApplication;
+        this.mContext = builder.mContext;
         this.mDownloadStorePath = builder.mDownloadStorePath;
         this.mDbExtFieldMap = builder.mDbExtFieldMap;
         this.mDbVersion = builder.mDbVersion;
@@ -61,7 +62,7 @@ public class DownloaderManagerConfiguration {
     }
 
     public static class Builder {
-        private Application mApplication;
+        private Context mContext;
         private String mDownloadStorePath;
         private int mMaxDownloadingCount = 1;
         private Map<String, String> mDbExtFieldMap;
@@ -72,8 +73,8 @@ public class DownloaderManagerConfiguration {
         private int mAutoRetryTimes = 3;
         private Headers.Builder mHeaders;
 
-        public Builder(Application application) {
-            this.mApplication = application;
+        public Builder(Context context) {
+            this.mContext = context;
             mHeaders = new Headers.Builder();
         }
 
@@ -188,8 +189,8 @@ public class DownloaderManagerConfiguration {
 
     }
 
-    public Application getApplication() {
-        return mApplication;
+    public Context getContext() {
+        return mContext;
     }
 
     public String getDownloadStorePath() {

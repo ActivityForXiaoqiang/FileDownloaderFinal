@@ -77,7 +77,7 @@ public class DownloaderManager {
      * 初始化DownloadManager
      */
     public synchronized void init(DownloaderManagerConfiguration configuration) {
-        FileDownloader.init(configuration.getApplication(), configuration.getOkHttpClientCustomMaker());
+        FileDownloader.init(configuration.getContext(), configuration.getOkHttpClientCustomMaker());
         FileDownloader.getImpl().bindService();
 
         ILogger.DEBUG = configuration.isDebug();
@@ -85,7 +85,7 @@ public class DownloaderManager {
 
         this.mConfiguration = configuration;
         this.mExtFieldMap = configuration.getDbExtField();
-        mDbController = new FileDownloaderDBController(configuration.getApplication(),configuration.getDbVersion(),
+        mDbController = new FileDownloaderDBController(configuration.getContext(),configuration.getDbVersion(),
                 mExtFieldMap, configuration.getDbUpgradeListener());
         mAllTasks = mDbController.getAllTasks();
         mConnectListenerList = new ArrayList<>();
