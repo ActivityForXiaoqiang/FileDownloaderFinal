@@ -6,7 +6,7 @@
 
 通过Gradle抓取:
 ```gradle
-compile 'cn.finalteam:filedownloaderfinal:1.0.6'
+compile 'cn.finalteam:filedownloaderfinal:1.0.7'
 ```
 * 在App Application中添加一下配置
 ```java
